@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { db } from "../utils/db";
 import { queries } from "../utils/queries";
+import { generateJWT } from "../middleware/jwtMiddleware";
 
 export const signUp = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -30,6 +31,12 @@ export const signUp = async (req: Request, res: Response) => {
   const user = await insertUser(email, hash);
 
   if (user) {
+    const token = generateJWT(user.uuid);
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
     res.status(201).json({
       uuid: user.uuid,
       email: user.email,

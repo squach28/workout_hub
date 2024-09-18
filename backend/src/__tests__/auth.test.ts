@@ -2,6 +2,8 @@ import request from "supertest";
 import { createServer } from "../utils/server";
 import { db } from "../utils/db";
 import { getUserByEmail, insertUser } from "../controllers/auth";
+import { verifyJWT } from "../middleware/jwtMiddleware";
+import { JwtPayload } from "jsonwebtoken";
 
 const app = createServer();
 
@@ -79,13 +81,18 @@ describe("auth", () => {
             email: "bob@gmail.com",
             password: "password123",
           };
-          const { statusCode, body } = await request(app)
-            .post("/auth/signUp")
-            .send(user);
+          const response = await request(app).post("/auth/signUp").send(user);
 
-          expect(statusCode).toBe(201);
-          expect(body).toHaveProperty("uuid");
-          expect(body).toHaveProperty("email", user.email);
+          const cookies = response.headers["set-cookie"];
+          const accessTokenPair = cookies[0].split(";")[0];
+          const accessToken = accessTokenPair.split("=")[1];
+
+          const decoded = verifyJWT(accessToken) as JwtPayload;
+
+          expect(decoded.uuid).not.toBe(null);
+          expect(response.statusCode).toBe(201);
+          expect(response.body).toHaveProperty("uuid");
+          expect(response.body).toHaveProperty("email", user.email);
         });
       });
       describe("given email does exist", () => {
