@@ -45,7 +45,6 @@ describe("auth", () => {
         const password = "password123";
         await insertUser(email, password);
         const user = await insertUser(email, password);
-        console.log(user);
         expect(user).toBe(null);
       });
     });
