@@ -2,6 +2,7 @@ import request from "supertest";
 import { createServer } from "../utils/server";
 import { db } from "../utils/db";
 import { getUserByEmail, insertUser } from "../controllers/auth";
+
 const app = createServer();
 
 describe("auth", () => {
