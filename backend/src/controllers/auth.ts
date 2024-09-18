@@ -75,8 +75,15 @@ export const hashPassword = async (
   }
 };
 
-export const insertUser = async (userEmail: string, hash: string) => {
+export const insertUser = async (
+  userEmail: string,
+  hash: string
+): Promise<{ uuid: string; email: string } | null> => {
   try {
+    const userExists = await getUserByEmail(userEmail);
+    if (userExists) {
+      return null;
+    }
     const result = await db.query(queries.insertUser, [userEmail, hash]);
     const { uuid, email } = result.rows[0];
     return { uuid, email };
