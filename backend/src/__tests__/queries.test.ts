@@ -1,4 +1,9 @@
-import { insertUser, getUserByEmail, insertExercise } from "../utils/queries";
+import {
+  insertUser,
+  getUserByEmail,
+  insertExercise,
+  getExercises,
+} from "../utils/queries";
 import { db } from "../utils/db";
 
 describe("db queries", () => {
@@ -71,24 +76,35 @@ describe("db queries", () => {
         expect(result).toBe(null);
       });
     });
-    // describe("getExercises", () => {
-    //   const exercises = [
-    //     {
-    //       id: 1,
-    //       name: "Bench Press",
-    //       type: "Weightlifting",
-    //     },
-    //     {
-    //       id: 2,
-    //       name: "Squat",
-    //       type: "Weightlifting",
-    //     },
-    //     {
-    //       id: 3,
-    //       name: "Treadmill",
-    //       type: "Cardio",
-    //     },
-    //   ];
-    // });
+    describe("getExercises", () => {
+      it("getExercises should return empty list", async () => {
+        const result = await getExercises();
+        expect(result).toHaveLength(0);
+      });
+
+      it("getExercises should return length of 3 when 3 exercises are added", async () => {
+        const exercises = [
+          {
+            name: "Bench Press",
+            type: "Weightlifting",
+          },
+          {
+            name: "Squat",
+            type: "Weightlifting",
+          },
+          {
+            name: "Treadmill",
+            type: "Cardio",
+          },
+        ];
+        await insertExercise(exercises[0].name, exercises[0].type);
+        await insertExercise(exercises[1].name, exercises[1].type);
+        await insertExercise(exercises[2].name, exercises[2].type);
+
+        const result = await getExercises();
+
+        expect(result).toHaveLength(exercises.length);
+      });
+    });
   });
 });
