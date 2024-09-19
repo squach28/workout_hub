@@ -1,4 +1,4 @@
-import { insertUser, getUserByEmail } from "../utils/queries";
+import { insertUser, getUserByEmail, insertExercise } from "../utils/queries";
 import { db } from "../utils/db";
 
 describe("db queries", () => {
@@ -42,5 +42,53 @@ describe("db queries", () => {
         expect(user).toHaveProperty("email", userInfo.email);
       });
     });
+  });
+  describe("exercise queries", () => {
+    afterEach(async () => {
+      await db.query("DELETE FROM exercises");
+      await db.query("ALTER SEQUENCE exercises_id_seq RESTART WITH 1");
+    });
+
+    describe("insertExercise", () => {
+      it("insertExercise should return the same exercise with a generated id", async () => {
+        const exercise = {
+          name: "Bench Press",
+          type: "Weightlifting",
+        };
+        const result = await insertExercise(exercise.name, exercise.type);
+        expect(result).toHaveProperty("id");
+        expect(result.name).toBe(exercise.name);
+        expect(result.type).toBe(exercise.type);
+      });
+
+      it("insertExercise should return null if exercise with name already exists", async () => {
+        const exercise = {
+          name: "Bench Press",
+          type: "Weightlifting",
+        };
+        await insertExercise(exercise.name, exercise.type);
+        const result = await insertExercise(exercise.name, exercise.type);
+        expect(result).toBe(null);
+      });
+    });
+    // describe("getExercises", () => {
+    //   const exercises = [
+    //     {
+    //       id: 1,
+    //       name: "Bench Press",
+    //       type: "Weightlifting",
+    //     },
+    //     {
+    //       id: 2,
+    //       name: "Squat",
+    //       type: "Weightlifting",
+    //     },
+    //     {
+    //       id: 3,
+    //       name: "Treadmill",
+    //       type: "Cardio",
+    //     },
+    //   ];
+    // });
   });
 });
