@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { db } from "../utils/db";
-import { queries } from "../utils/queries";
+import { getUserByEmail, insertUser, getHashByEmail } from "../utils/queries";
+import { generateJWT } from "../middleware/jwtMiddleware";
 
 export const signUp = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -30,6 +31,12 @@ export const signUp = async (req: Request, res: Response) => {
   const user = await insertUser(email, hash);
 
   if (user) {
+    const token = generateJWT(user.uuid);
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
     res.status(201).json({
       uuid: user.uuid,
       email: user.email,
@@ -43,21 +50,35 @@ export const signUp = async (req: Request, res: Response) => {
   return;
 };
 
-export const getUserByEmail = async (
-  email: string
-): Promise<{ uuid: string; email: string } | null> => {
-  try {
-    const result = await db.query(queries.getUserByEmail, [email]);
-    if (result.rowCount) {
-      const user = result.rows[0];
-      const { uuid, email } = user;
-      return { uuid, email };
-    } else {
-      return null;
-    }
-  } catch (e) {
-    console.log(e);
-    return null;
+export const login = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  if (email === undefined || password === undefined) {
+    res.status(400).json({ message: "Missing email or password" });
+    return;
+  }
+
+  const userExists = await getUserByEmail(email);
+
+  if (userExists === null) {
+    res.status(404).json({ message: `${email} does not exist` });
+    return;
+  }
+
+  const hash = await getHashByEmail(email);
+
+  if (hash === null) {
+    res.status(500).json({ message: "Something went wrong, try again later." });
+    return;
+  }
+
+  const match = await comparePasswords(password, hash);
+
+  if (match) {
+    res.status(200).json({ message: "Success" });
+    return;
+  } else {
+    res.status(400).json({ message: "Wrong password" });
   }
 };
 
@@ -75,18 +96,13 @@ export const hashPassword = async (
   }
 };
 
-export const insertUser = async (
-  userEmail: string,
+export const comparePasswords = async (
+  password: string,
   hash: string
-): Promise<{ uuid: string; email: string } | null> => {
+): Promise<boolean | null> => {
   try {
-    const userExists = await getUserByEmail(userEmail);
-    if (userExists) {
-      return null;
-    }
-    const result = await db.query(queries.insertUser, [userEmail, hash]);
-    const { uuid, email } = result.rows[0];
-    return { uuid, email };
+    const compare = await bcrypt.compare(password, hash);
+    return compare;
   } catch (e) {
     console.log(e);
     return null;
