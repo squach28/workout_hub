@@ -10,10 +10,6 @@ const app = createServer();
 
 describe("auth", () => {
   describe("test database functions in auth", () => {
-    beforeEach(async () => {
-      await db.query("DELETE FROM auth");
-    });
-
     afterEach(async () => {
       await db.query("DELETE FROM auth");
     });
@@ -57,11 +53,9 @@ describe("auth", () => {
     it("comparePasswords should return true if passwords match", async () => {
       const password = "password123";
       const hash = await hashPassword(password);
-      console.log(hash);
       expect(hash).not.toBe(null);
       if (hash) {
         const comparison = await comparePasswords(password, hash);
-        console.log(comparison);
         expect(comparison).toBe(true);
       }
     });
