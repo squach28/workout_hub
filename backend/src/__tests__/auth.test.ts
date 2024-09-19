@@ -56,23 +56,29 @@ describe("auth", () => {
   describe("test password hashing and comparisons", () => {
     it("comparePasswords should return true if passwords match", async () => {
       const password = "password123";
-      const hash = (await hashPassword(password)) as string;
-
-      const comparison = await comparePasswords(password, hash);
-      expect(comparison).toBe(true);
+      const hash = await hashPassword(password);
+      console.log(hash);
+      expect(hash).not.toBe(null);
+      if (hash) {
+        const comparison = await comparePasswords(password, hash);
+        console.log(comparison);
+        expect(comparison).toBe(true);
+      }
     });
 
     it("comparePasswords should return false if passwords do not match", async () => {
       const password = "password123";
       const passwordToTry = "password";
-      const hash = (await hashPassword(password)) as string;
-
-      const comparison = await comparePasswords(passwordToTry, hash);
-      expect(comparison).toBe(false);
+      const hash = await hashPassword(password);
+      expect(hash).not.toBe(null);
+      if (hash) {
+        const comparison = await comparePasswords(passwordToTry, hash);
+        expect(comparison).toBe(false);
+      }
     });
   });
-
-  describe("post signUp route", () => {
+  // /auth/signup
+  describe("post signup route", () => {
     afterEach(() => {
       db.query("DELETE FROM auth");
     });
@@ -129,7 +135,7 @@ describe("auth", () => {
       });
     });
   });
-
+  // /auth/login
   describe("post login route", () => {
     afterEach(() => {
       db.query("DELETE FROM auth");
@@ -197,8 +203,8 @@ describe("auth", () => {
         });
       });
 
-      describe("given password is incorrect", () => {
-        it("should return a 400", async () => {
+      describe("given email does not exist", () => {
+        it("should return a 404", async () => {
           const userInfo = {
             email: "bob@gmail.com",
             password: "password123",
@@ -212,20 +218,20 @@ describe("auth", () => {
           expect(signupRequest.body).toHaveProperty("uuid");
           expect(signupRequest.body).toHaveProperty("email", userInfo.email);
 
-          const incorrectPassword = {
-            email: "bob@gmail.com",
-            password: "wrongPassword",
+          const emailDoesNotExist = {
+            email: "bob123@gmail.com",
+            password: "password123",
           };
-          const incorrectPasswordMessage = "Wrong password";
+          const emailDoesNotExistMessage = `${emailDoesNotExist.email} does not exist`;
 
           const loginRequest = await request(app)
             .post("/auth/login")
-            .send(incorrectPassword);
+            .send(emailDoesNotExist);
 
-          expect(loginRequest.statusCode).toBe(400);
+          expect(loginRequest.statusCode).toBe(404);
           expect(loginRequest.body).toHaveProperty(
             "message",
-            incorrectPasswordMessage
+            emailDoesNotExistMessage
           );
         });
       });

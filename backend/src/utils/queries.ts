@@ -68,7 +68,7 @@ export const insertUser = async (
 export const getHashByEmail = async (email: string): Promise<string | null> => {
   try {
     const result = await db.query(queries.getHashByEmail, [email]);
-    const { password } = result.rows[0].password;
+    const { password } = result.rows[0];
     return password;
   } catch (e) {
     console.log(e);
