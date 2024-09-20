@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import { Box, Card, CardContent, Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import Navbar from "../components/Navbar";
 import joggingImg from "../assets/images/people_jogging.svg";
@@ -38,48 +38,52 @@ const Landing = () => {
       <Typography textAlign="center" variant="h4" sx={{ mt: 3 }}>
         Discover and share your workouts with others
       </Typography>
-      <Grid
-        container
-        spacing={{ xs: 4, sm: 6 }}
-        sx={{
-          my: 4,
-          p: { sm: 1, md: 3 },
-          flexDirection: { sm: "column", md: "row" },
-        }}
-      >
-        {cardContent.map((content) => (
-          <Grid size={{ xs: 11, sm: 7, md: 4, lg: 4 }} sx={{ mx: "auto" }}>
-            <Card
-              sx={{
-                flexGrow: 1,
-                alignItems: "center",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <CardContent
+      <Box sx={{ maxWidth: { md: "80%" }, mx: { md: "auto" } }}>
+        <Grid
+          container
+          spacing={{ xs: 4, sm: 7 }}
+          sx={{
+            my: 4,
+            p: { sm: 1, md: 3 },
+            flexDirection: { sm: "column", md: "row" },
+          }}
+        >
+          {cardContent.map((content) => (
+            <Grid size={{ xs: 11, sm: 7, md: 4, lg: 4 }} sx={{ mx: "auto" }}>
+              <Card
                 sx={{
+                  flexGrow: 1,
+                  alignItems: "center",
                   display: "flex",
                   flexDirection: "column",
-                  alignItems: "center",
-                  justifyItems: "center",
                 }}
               >
-                <Typography variant="h5" sx={{ textAlign: "center" }}>
-                  {content.title}
-                </Typography>
-                <img
-                  width={200}
-                  height={200}
-                  src={content.imageUrl}
-                  alt="a guy and a girl running in the park"
-                />
-                <Typography variant="body1">{content.description}</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+                <CardContent
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyItems: "center",
+                  }}
+                >
+                  <Typography variant="h5" sx={{ textAlign: "center" }}>
+                    {content.title}
+                  </Typography>
+                  <img
+                    width={200}
+                    height={200}
+                    src={content.imageUrl}
+                    alt="a guy and a girl running in the park"
+                  />
+                  <Typography variant="body1" textAlign="center">
+                    {content.description}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
     </Box>
   );
 };
