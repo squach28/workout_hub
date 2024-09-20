@@ -1,5 +1,6 @@
 import { QueryResult } from "pg";
 import { db } from "./db";
+import { Exercise } from "../types/Exercise";
 
 const queries = {
   insertUser:
@@ -103,7 +104,10 @@ export const getExerciseByName = async (name: string) => {
   }
 };
 
-export const insertExercise = async (name: string, type: string) => {
+export const insertExercise = async (
+  name: string,
+  type: string
+): Promise<Exercise | null> => {
   try {
     const exerciseExists = await getExerciseByName(name);
     if (exerciseExists) {

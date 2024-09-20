@@ -5,6 +5,7 @@ import {
   getExercises,
 } from "../utils/queries";
 import { db } from "../utils/db";
+import { Exercise } from "../types/Exercise";
 
 describe("db queries", () => {
   describe("user queries", () => {
@@ -60,7 +61,10 @@ describe("db queries", () => {
           name: "Bench Press",
           type: "Weightlifting",
         };
-        const result = await insertExercise(exercise.name, exercise.type);
+        const result = (await insertExercise(
+          exercise.name,
+          exercise.type
+        )) as Exercise;
         expect(result).toHaveProperty("id");
         expect(result.name).toBe(exercise.name);
         expect(result.type).toBe(exercise.type);
