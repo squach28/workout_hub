@@ -73,6 +73,8 @@ const SignUpForm = () => {
     setShowConfirmPassword((prev) => !prev);
   };
 
+  const handleSignUp = () => {};
+
   return (
     <Paper
       elevation={4}
@@ -162,7 +164,12 @@ const SignUpForm = () => {
             label="Confirm Password"
           />
         </FormControl>
-        <Button variant="contained" color="primary" sx={{ mt: 1 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mt: 1 }}
+          onClick={handleSignUp}
+        >
           Sign up
         </Button>
         <Typography sx={{ textAlign: "center" }}>
