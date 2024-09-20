@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Container, Typography } from "@mui/material";
+import { Box, Card, CardContent, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import Navbar from "../components/Navbar";
 import joggingImg from "../assets/images/people_jogging.svg";
@@ -56,6 +56,7 @@ const Landing = () => {
                   alignItems: "center",
                   display: "flex",
                   flexDirection: "column",
+                  p: 2,
                 }}
               >
                 <CardContent

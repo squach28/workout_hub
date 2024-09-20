@@ -103,6 +103,7 @@ const SignUpForm = () => {
                 </IconButton>
               </InputAdornment>
             }
+            sx={{ backgroundColor: "#FCFCFC" }}
             label="Password"
           />
         </FormControl>
@@ -122,10 +123,11 @@ const SignUpForm = () => {
                 </IconButton>
               </InputAdornment>
             }
+            sx={{ backgroundColor: "#FCFCFC" }}
             label="Confirm Password"
           />
         </FormControl>
-        <Button variant="contained" sx={{ backgroundColor: "black", mt: 1 }}>
+        <Button variant="contained" color="primary" sx={{ mt: 1 }}>
           Sign up
         </Button>
         <Typography sx={{ textAlign: "center" }}>
