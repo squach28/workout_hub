@@ -86,6 +86,8 @@ const SignUpForm = () => {
         <Typography variant="subtitle1">Workout Hub</Typography>
         <Typography variant="h4">Sign up</Typography>
         <TextField
+          id="firstName"
+          name="firstName"
           size="small"
           label="First Name"
           variant="outlined"
@@ -94,6 +96,8 @@ const SignUpForm = () => {
           sx={{ backgroundColor: "#FCFCFC" }}
         />
         <TextField
+          id="lastName"
+          name="lastName"
           size="small"
           label="Last Name"
           variant="outlined"
@@ -102,6 +106,8 @@ const SignUpForm = () => {
           sx={{ backgroundColor: "#FCFCFC" }}
         />
         <TextField
+          id="email"
+          name="email"
           type="email"
           size="small"
           label="Email"
@@ -114,6 +120,7 @@ const SignUpForm = () => {
           <InputLabel htmlFor="password">Password</InputLabel>
           <OutlinedInput
             id="password"
+            name="password"
             type={showPassword ? "text" : "password"}
             endAdornment={
               <InputAdornment position="end">
@@ -136,6 +143,7 @@ const SignUpForm = () => {
           <InputLabel htmlFor="confirmPassword">Confirm Password</InputLabel>
           <OutlinedInput
             id="confirmPassword"
+            name="confirmPassword"
             type={showConfirmPassword ? "text" : "password"}
             endAdornment={
               <InputAdornment position="end">
