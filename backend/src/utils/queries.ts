@@ -20,6 +20,7 @@ export const commitTransaction = async (
   try {
     await db.query("BEGIN");
     const result = await db.query(query, values);
+    await db.query("COMMIT");
     return result;
   } catch (e) {
     console.log(e);

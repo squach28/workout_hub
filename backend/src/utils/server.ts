@@ -4,7 +4,6 @@ import bodyParser from "body-parser";
 import { router as authRouter } from "../routes/auth";
 import { router as exercisesRouter } from "../routes/exercises";
 import cookieParser from "cookie-parser";
-import { router } from "../routes/exercises";
 
 export const createServer = () => {
   const app = express();

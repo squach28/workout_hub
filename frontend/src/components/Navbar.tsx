@@ -13,7 +13,7 @@ import { Link as RouterLink } from "react-router-dom";
 const Navbar = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: "green" }}>
+      <AppBar position="static" color="primary">
         <Toolbar>
           <Typography variant="h6" sx={{ mr: 2 }}>
             Workout Hub
