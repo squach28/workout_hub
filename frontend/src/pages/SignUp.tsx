@@ -12,9 +12,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
+import { UserSignUpData } from "../types/UserSignUpData";
 
 const SignUp = () => {
   return (
@@ -47,6 +48,22 @@ const SignUp = () => {
 const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [userSignUpData, setUserSignUpData] = useState<UserSignUpData>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setUserSignUpData({
+      ...userSignUpData,
+      [name]: value,
+    });
+  };
 
   const handleClickShowPassword = () => {
     setShowPassword((prev) => !prev);
@@ -72,12 +89,16 @@ const SignUpForm = () => {
           size="small"
           label="First Name"
           variant="outlined"
+          onChange={handleFormChange}
+          value={userSignUpData.firstName}
           sx={{ backgroundColor: "#FCFCFC" }}
         />
         <TextField
           size="small"
           label="Last Name"
           variant="outlined"
+          onChange={handleFormChange}
+          value={userSignUpData.lastName}
           sx={{ backgroundColor: "#FCFCFC" }}
         />
         <TextField
@@ -85,6 +106,8 @@ const SignUpForm = () => {
           size="small"
           label="Email"
           variant="outlined"
+          onChange={handleFormChange}
+          value={userSignUpData.email}
           sx={{ backgroundColor: "#FCFCFC" }}
         />
         <FormControl size="small" variant="outlined">
@@ -103,6 +126,8 @@ const SignUpForm = () => {
                 </IconButton>
               </InputAdornment>
             }
+            onChange={handleFormChange}
+            value={userSignUpData.password}
             sx={{ backgroundColor: "#FCFCFC" }}
             label="Password"
           />
@@ -123,6 +148,8 @@ const SignUpForm = () => {
                 </IconButton>
               </InputAdornment>
             }
+            onChange={handleFormChange}
+            value={userSignUpData.confirmPassword}
             sx={{ backgroundColor: "#FCFCFC" }}
             label="Confirm Password"
           />
