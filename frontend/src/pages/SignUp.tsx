@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   FormControl,
+  FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -16,6 +17,7 @@ import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { UserSignUpData } from "../types/UserSignUpData";
+import { validateUserSignUpData } from "../utils/validators";
 
 const SignUp = () => {
   return (
@@ -61,6 +63,7 @@ const SignUpForm = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    valid: true,
   });
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +83,10 @@ const SignUpForm = () => {
     setShowConfirmPassword((prev) => !prev);
   };
 
-  const handleSignUp = () => {};
+  const handleSignUp = () => {
+    const currErrors = validateUserSignUpData(userSignUpData);
+    setErrors(currErrors);
+  };
 
   return (
     <Paper
@@ -102,6 +108,8 @@ const SignUpForm = () => {
           variant="outlined"
           onChange={handleFormChange}
           value={userSignUpData.firstName}
+          error={errors.firstName !== ""}
+          helperText={errors.firstName}
           sx={{ backgroundColor: "#FCFCFC" }}
         />
         <TextField
@@ -112,6 +120,8 @@ const SignUpForm = () => {
           variant="outlined"
           onChange={handleFormChange}
           value={userSignUpData.lastName}
+          error={errors.lastName !== ""}
+          helperText={errors.lastName}
           sx={{ backgroundColor: "#FCFCFC" }}
         />
         <TextField
@@ -123,10 +133,14 @@ const SignUpForm = () => {
           variant="outlined"
           onChange={handleFormChange}
           value={userSignUpData.email}
+          error={errors.email !== ""}
+          helperText={errors.email}
           sx={{ backgroundColor: "#FCFCFC" }}
         />
         <FormControl size="small" variant="outlined">
-          <InputLabel htmlFor="password">Password</InputLabel>
+          <InputLabel htmlFor="password" error={errors.password !== ""}>
+            Password
+          </InputLabel>
           <OutlinedInput
             id="password"
             name="password"
@@ -144,12 +158,21 @@ const SignUpForm = () => {
             }
             onChange={handleFormChange}
             value={userSignUpData.password}
+            error={errors.password !== ""}
             sx={{ backgroundColor: "#FCFCFC" }}
             label="Password"
           />
+          <FormHelperText error={errors.password !== ""}>
+            {errors.password}
+          </FormHelperText>
         </FormControl>
         <FormControl size="small" variant="outlined">
-          <InputLabel htmlFor="confirmPassword">Confirm Password</InputLabel>
+          <InputLabel
+            htmlFor="confirmPassword"
+            error={errors.confirmPassword !== ""}
+          >
+            Confirm Password
+          </InputLabel>
           <OutlinedInput
             id="confirmPassword"
             name="confirmPassword"
@@ -167,9 +190,13 @@ const SignUpForm = () => {
             }
             onChange={handleFormChange}
             value={userSignUpData.confirmPassword}
+            error={errors.confirmPassword !== ""}
             sx={{ backgroundColor: "#FCFCFC" }}
             label="Confirm Password"
           />
+          <FormHelperText error={errors.confirmPassword !== ""}>
+            {errors.confirmPassword}
+          </FormHelperText>
         </FormControl>
         <Button
           variant="contained"
