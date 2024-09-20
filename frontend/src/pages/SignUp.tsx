@@ -18,6 +18,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { UserSignUpData } from "../types/UserSignUpData";
 import { validateUserSignUpData } from "../utils/validators";
+import axios from "axios";
 
 const SignUp = () => {
   return (
@@ -39,6 +40,7 @@ const SignUp = () => {
           width: { xs: "90%", md: "auto" },
           justifyContent: "center",
           minHeight: "100vh",
+          p: 2,
         }}
       >
         <SignUpForm />
@@ -65,7 +67,8 @@ const SignUpForm = () => {
     confirmPassword: "",
     valid: true,
   });
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -86,6 +89,24 @@ const SignUpForm = () => {
   const handleSignUp = () => {
     const currErrors = validateUserSignUpData(userSignUpData);
     setErrors(currErrors);
+    if (currErrors.valid) {
+      setLoading(true);
+      const user = {
+        firstName: userSignUpData.firstName,
+        lastName: userSignUpData.lastName,
+        email: userSignUpData.email,
+        password: userSignUpData.password,
+      };
+      axios
+        .post(`${import.meta.env.VITE_API_URL}/auth/signup`, user)
+        .then((res) => {
+          if (res.status === 201) {
+            console.log("success!");
+          }
+        })
+        .catch((e) => setError(e))
+        .finally(() => setLoading(false));
+    }
   };
 
   return (
@@ -203,8 +224,9 @@ const SignUpForm = () => {
           color="primary"
           sx={{ mt: 1 }}
           onClick={handleSignUp}
+          disabled={loading}
         >
-          Sign up
+          {loading ? "Loading..." : "Sign Up"}
         </Button>
         <Typography sx={{ textAlign: "center" }}>
           Already have an account?
