@@ -1,8 +1,10 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { router } from "../routes/auth";
+import { router as authRouter } from "../routes/auth";
+import { router as exercisesRouter } from "../routes/exercises";
 import cookieParser from "cookie-parser";
+import { router } from "../routes/exercises";
 
 export const createServer = () => {
   const app = express();
@@ -11,10 +13,13 @@ export const createServer = () => {
   app.use(express.json());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(cookieParser());
+
+  app.use("/auth", authRouter);
+  app.use("/exercises", exercisesRouter);
+
   app.get("/", (req, res) => {
     res.status(200).send("hello world");
   });
 
-  app.use("/auth", router);
   return app;
 };
