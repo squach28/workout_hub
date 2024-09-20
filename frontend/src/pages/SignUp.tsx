@@ -29,10 +29,9 @@ const SignUp = () => {
       justifyItems="center"
       sx={{
         background: "rgba(188, 219, 167, 0.2)",
-        "border-radius": "16px",
-        "box-shadow": "0 4px 30px rgba(0, 0, 0, 0.1)",
-        "backdrop-filter": "blur(2.9px)",
-        "-webkit-backdrop-filter": "blur(2.9px)",
+        borderRadius: "16px",
+        boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+        backdropFilter: "blur(2.9px)",
       }}
     >
       <Stack
@@ -68,7 +67,7 @@ const SignUpForm = () => {
     valid: true,
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<{ message: string } | null>(null);
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -90,6 +89,7 @@ const SignUpForm = () => {
     const currErrors = validateUserSignUpData(userSignUpData);
     setErrors(currErrors);
     if (currErrors.valid) {
+      setError(null);
       setLoading(true);
       const user = {
         firstName: userSignUpData.firstName,
@@ -104,7 +104,10 @@ const SignUpForm = () => {
             console.log("success!");
           }
         })
-        .catch((e) => setError(e))
+        .catch((e) => {
+          console.log(e.response.data);
+          setError(e.response.data);
+        })
         .finally(() => setLoading(false));
     }
   };
@@ -219,6 +222,11 @@ const SignUpForm = () => {
             {errors.confirmPassword}
           </FormHelperText>
         </FormControl>
+        {error !== null ? (
+          <Typography variant="caption" color="error">
+            {error.message}
+          </Typography>
+        ) : null}
         <Button
           variant="contained"
           color="primary"
