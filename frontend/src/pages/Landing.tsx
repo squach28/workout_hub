@@ -24,7 +24,16 @@ const Landing = () => {
     },
   ];
   return (
-    <Box>
+    <Box
+      sx={{
+        background: "rgba(188, 219, 167, 0.2)",
+        "border-radius": "16px",
+        "box-shadow": "0 4px 30px rgba(0, 0, 0, 0.1)",
+        "backdrop-filter": "blur(2.9px)",
+        "-webkit-backdrop-filter": "blur(2.9px)",
+        minHeight: "100vh",
+      }}
+    >
       <Navbar />
       <Typography textAlign="center" variant="h4" sx={{ mt: 3 }}>
         Discover and share your workouts with others
