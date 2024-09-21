@@ -121,7 +121,7 @@ const SignUpForm = () => {
         minWidth: { md: "400px" },
       }}
     >
-      <Stack sx={{ display: "flex", flexDirection: "column", gap: 3.5 }}>
+      <Stack sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
         <Typography variant="subtitle1">Workout Hub</Typography>
         <Typography variant="h4">Sign up</Typography>
         <TextField
