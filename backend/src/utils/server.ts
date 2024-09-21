@@ -8,6 +8,9 @@ import cookieParser from "cookie-parser";
 export const createServer = () => {
   const app = express();
 
+  const corsOptions = {
+    origin: process.env.CORS_ORIGIN,
+  };
   app.use(cors());
   app.use(express.json());
   app.use(bodyParser.urlencoded({ extended: true }));
