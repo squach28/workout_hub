@@ -122,7 +122,13 @@ const SignUpForm = () => {
       }}
     >
       <Stack sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-        <Typography variant="subtitle1">Workout Hub</Typography>
+        <Link
+          to="/"
+          component={RouterLink}
+          sx={{ textDecoration: "none", color: "black" }}
+        >
+          <Typography variant="subtitle1">Workout Hub</Typography>
+        </Link>
         <Typography variant="h4">Sign up</Typography>
         <TextField
           id="firstName"
