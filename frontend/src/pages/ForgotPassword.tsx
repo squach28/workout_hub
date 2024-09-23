@@ -1,4 +1,13 @@
-import { Box, Stack } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Stack,
+  Link,
+  Typography,
+  TextField,
+  Button,
+} from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 const ForgotPassword = () => {
   return (
@@ -20,8 +29,47 @@ const ForgotPassword = () => {
           justifyContent: "center",
           minHeight: "100vh",
         }}
-      ></Stack>
+      >
+        <ForgotPasswordForm />
+      </Stack>
     </Box>
+  );
+};
+
+const ForgotPasswordForm = () => {
+  return (
+    <Paper
+      elevation={4}
+      sx={{
+        px: { xs: 2, md: 5 },
+        py: { xs: 2, md: 4 },
+        minWidth: { md: "400px" },
+        maxWidth: { md: "600px" },
+      }}
+    >
+      <Stack sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
+        <Link
+          to="/"
+          component={RouterLink}
+          sx={{ textDecoration: "none", color: "black" }}
+        >
+          <Typography>Workout Hub</Typography>
+        </Link>
+        <Typography variant="h4">Forgot Password</Typography>
+        <Typography>
+          Enter your email to reset your password. A link will be sent to your
+          email to reset your password.
+        </Typography>
+        <TextField
+          id="email"
+          name="email"
+          size="small"
+          label="Email"
+          variant="outlined"
+        />
+        <Button variant="contained">Reset Password</Button>
+      </Stack>
+    </Paper>
   );
 };
 
