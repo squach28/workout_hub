@@ -49,7 +49,11 @@ const Landing = () => {
           }}
         >
           {cardContent.map((content) => (
-            <Grid size={{ xs: 11, sm: 7, md: 4, lg: 4 }} sx={{ mx: "auto" }}>
+            <Grid
+              key={content.title}
+              size={{ xs: 11, sm: 7, md: 4, lg: 4 }}
+              sx={{ mx: "auto" }}
+            >
               <Card
                 sx={{
                   flexGrow: 1,
