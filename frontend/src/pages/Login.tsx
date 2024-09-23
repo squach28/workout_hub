@@ -28,7 +28,6 @@ const Login = () => {
           width: { xs: "90%", md: "auto" },
           justifyContent: "center",
           minHeight: "100vh",
-          p: 2,
         }}
       >
         <LoginForm />
