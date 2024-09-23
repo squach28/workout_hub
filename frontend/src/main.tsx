@@ -7,6 +7,7 @@ import Login from "./pages/Login.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import Landing from "./pages/Landing.tsx";
 import { createTheme, ThemeProvider } from "@mui/material";
+import ForgotPassword from "./pages/ForgotPassword.tsx";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/forgotPassword",
+    element: <ForgotPassword />,
   },
 ]);
 
