@@ -27,10 +27,9 @@ const Landing = () => {
     <Box
       sx={{
         background: "rgba(188, 219, 167, 0.2)",
-        "border-radius": "16px",
-        "box-shadow": "0 4px 30px rgba(0, 0, 0, 0.1)",
-        "backdrop-filter": "blur(2.9px)",
-        "-webkit-backdrop-filter": "blur(2.9px)",
+        borderRadius: "16px",
+        boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+        backdropFilter: "blur(2.9px)",
         minHeight: "100vh",
       }}
     >
@@ -49,7 +48,11 @@ const Landing = () => {
           }}
         >
           {cardContent.map((content) => (
-            <Grid size={{ xs: 11, sm: 7, md: 4, lg: 4 }} sx={{ mx: "auto" }}>
+            <Grid
+              key={content.title}
+              size={{ xs: 11, sm: 7, md: 4, lg: 4 }}
+              sx={{ mx: "auto" }}
+            >
               <Card
                 sx={{
                   flexGrow: 1,

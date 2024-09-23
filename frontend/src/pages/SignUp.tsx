@@ -39,7 +39,6 @@ const SignUp = () => {
           width: { xs: "90%", md: "auto" },
           justifyContent: "center",
           minHeight: "100vh",
-          p: 2,
         }}
       >
         <SignUpForm />
@@ -64,10 +63,11 @@ const SignUpForm = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    valid: true,
+    valid: false,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<{ message: string } | null>(null);
+
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -125,7 +125,7 @@ const SignUpForm = () => {
         <Link
           to="/"
           component={RouterLink}
-          sx={{ textDecoration: "none", color: "black" }}
+          sx={{ textDecoration: "none", color: "black", mr: "auto" }}
         >
           <Typography variant="subtitle1">Workout Hub</Typography>
         </Link>
@@ -249,7 +249,7 @@ const SignUpForm = () => {
             sx={{ mx: 0.5, color: "black", fontWeight: "bold" }}
             to="/login"
           >
-            Sign in
+            Log in
           </Link>
         </Typography>
       </Stack>
