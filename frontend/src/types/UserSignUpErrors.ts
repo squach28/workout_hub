@@ -1,7 +1,8 @@
 export type UserSignUpErrors = {
-  firstName: "";
-  lastName: "";
-  email: "";
-  password: "";
-  confirmPassword: "";
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  valid: boolean;
 };

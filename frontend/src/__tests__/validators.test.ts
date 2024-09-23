@@ -1,8 +1,10 @@
+import { UserLogInData } from "../types/UserLogInData";
 import { UserSignUpData } from "../types/UserSignUpData";
 import {
   doPasswordsMatch,
   isEmailValid,
   isEmpty,
+  validateUserLogInData,
   validateUserSignUpData,
 } from "../utils/validators";
 import { describe, expect, it } from "vitest";
@@ -153,6 +155,79 @@ describe("testing functions in validators", () => {
         const mismatchingPasswordsMessage = "Passwords do not match";
         const result = validateUserSignUpData(mismatchingPasswordsUserData);
         expect(result.confirmPassword).toBe(mismatchingPasswordsMessage);
+      });
+    });
+  });
+
+  describe("validateUserLoginData", () => {
+    describe("given user data with valid data", () => {
+      it("should return error object with all fields empty", () => {
+        const validUserData: UserLogInData = {
+          email: "bob@gmail.com",
+          password: "password123",
+        };
+
+        const result = validateUserLogInData(validUserData);
+
+        expect(result.email).toBe("");
+        expect(result.password).toBe("");
+        expect(result.valid).toBeTruthy();
+      });
+    });
+    describe("given user data with empty fields", () => {
+      it("should return error object with all fields filled", () => {
+        const emptyUserData: UserLogInData = {
+          email: "",
+          password: "",
+        };
+        const errorMessage = "Field cannot be empty";
+
+        const result = validateUserLogInData(emptyUserData);
+
+        expect(result.email).toBe(errorMessage);
+        expect(result.password).toBe(errorMessage);
+        expect(result.valid).toBeFalsy();
+      });
+    });
+    describe("given user data with empty email field", () => {
+      it("should return error object with email field filled", () => {
+        const emptyUserData: UserLogInData = {
+          email: "",
+          password: "password123",
+        };
+        const errorMessage = "Field cannot be empty";
+
+        const result = validateUserLogInData(emptyUserData);
+
+        expect(result.email).toBe(errorMessage);
+        expect(result.password).toBe("");
+        expect(result.valid).toBeFalsy();
+      });
+    });
+    describe("given user data with empty password field", () => {
+      it("should return error object with password field filled", () => {
+        const emptyPasswordData: UserLogInData = {
+          email: "bob@gmail.com",
+          password: "",
+        };
+        const errorMessage = "Field cannot be empty";
+
+        const result = validateUserLogInData(emptyPasswordData);
+
+        expect(result.email).toBe("");
+        expect(result.password).toBe(errorMessage);
+        expect(result.valid).toBeFalsy();
+      });
+    });
+    describe("given user data with invalid email", () => {
+      it("should return error object with a value in email field", () => {
+        const invalidEmailUser: UserLogInData = {
+          email: "@gmail.com",
+          password: "password123",
+        };
+        const invalidEmailMessage = "Email is not valid";
+        const result = validateUserLogInData(invalidEmailUser);
+        expect(result.email).toBe(invalidEmailMessage);
       });
     });
   });

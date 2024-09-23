@@ -1,5 +1,6 @@
 import validator from "validator";
 import { UserSignUpData } from "../types/UserSignUpData";
+import { UserLogInData } from "../types/UserLogInData";
 
 export const isEmpty = (value: string) => {
   if (value === "") {
@@ -32,11 +33,9 @@ export const validateUserSignUpData = (userSignUpData: UserSignUpData) => {
       errors.valid = false;
     } else if (name === "email") {
       const email = userSignUpData[name];
-      console.log(email);
       if (!isEmailValid(email)) {
         errors[name] = "Email is not valid";
         errors.valid = false;
-        console.log("invalid");
       } else {
         errors[name] = "";
       }
@@ -53,6 +52,34 @@ export const validateUserSignUpData = (userSignUpData: UserSignUpData) => {
       const confirmPassword = userSignUpData[name];
       if (!doPasswordsMatch(password, confirmPassword)) {
         errors[name] = "Passwords do not match";
+        errors.valid = false;
+      } else {
+        errors[name] = "";
+      }
+    } else {
+      errors[name] = "";
+    }
+  }
+  return errors;
+};
+
+export const validateUserLogInData = (userLoginData: UserLogInData) => {
+  const errors = {
+    email: "",
+    password: "",
+    valid: true,
+  };
+
+  let name: keyof typeof userLoginData;
+
+  for (name in userLoginData) {
+    if (isEmpty(userLoginData[name])) {
+      errors[name] = "Field cannot be empty";
+      errors.valid = false;
+    } else if (name === "email") {
+      const email = userLoginData[name];
+      if (!isEmailValid(email)) {
+        errors[name] = "Email is not valid";
         errors.valid = false;
       } else {
         errors[name] = "";
