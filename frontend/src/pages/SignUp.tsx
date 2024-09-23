@@ -249,7 +249,7 @@ const SignUpForm = () => {
             sx={{ mx: 0.5, color: "black", fontWeight: "bold" }}
             to="/login"
           >
-            Sign in
+            Log in
           </Link>
         </Typography>
       </Stack>
