@@ -115,7 +115,7 @@ const LoginForm = () => {
         <Link
           to="/"
           component={RouterLink}
-          sx={{ textDecoration: "none", color: "black" }}
+          sx={{ textDecoration: "none", color: "black", mr: "auto" }}
         >
           <Typography>Workout Hub</Typography>
         </Link>
