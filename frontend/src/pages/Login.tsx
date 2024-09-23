@@ -11,11 +11,14 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
+  FormHelperText,
 } from "@mui/material";
 import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { UserLogInData } from "../types/UserLogInData";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { UserLoginErrors } from "../types/UserLogInErrors";
+import { validateUserLogInData } from "../utils/validators";
 
 const Login = () => {
   return (
@@ -49,7 +52,14 @@ const LoginForm = () => {
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState<UserLoginErrors>({
+    email: "",
+    password: "",
+    valid: false,
+  });
+  const [error, setError] = useState<{ message: string } | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -62,6 +72,19 @@ const LoginForm = () => {
 
   const handleClickShowPassword = () => {
     setShowPassword((prev) => !prev);
+  };
+
+  const handleLogin = () => {
+    const currErrors = validateUserLogInData(userLoginData);
+    setErrors(currErrors);
+    if (currErrors.valid) {
+      setError(null);
+      setLoading(true);
+      const user = {
+        email: userLoginData.email,
+        password: userLoginData.password,
+      };
+    }
   };
 
   return (
@@ -90,6 +113,8 @@ const LoginForm = () => {
           variant="outlined"
           onChange={handleFormChange}
           value={userLoginData.email}
+          error={errors.email !== ""}
+          helperText={errors.email}
           sx={{ backgroundColor: "#FCFCFC" }}
         />
         <FormControl size="small" variant="outlined">
@@ -111,9 +136,13 @@ const LoginForm = () => {
             }
             onChange={handleFormChange}
             value={userLoginData.password}
+            error={errors.password !== ""}
             sx={{ backgroundColor: "#FCFCFC" }}
             label="Password"
           />
+          <FormHelperText error={errors.password !== ""}>
+            {errors.password}
+          </FormHelperText>
         </FormControl>
         <Link
           to="/forgotPassword"
@@ -122,7 +151,7 @@ const LoginForm = () => {
         >
           <Typography sx={{}}>Forgot password?</Typography>
         </Link>
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={handleLogin}>
           Log in
         </Button>
         <Typography sx={{ textAlign: "center" }}>

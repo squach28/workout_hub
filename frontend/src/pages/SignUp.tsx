@@ -63,7 +63,7 @@ const SignUpForm = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    valid: true,
+    valid: false,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<{ message: string } | null>(null);
