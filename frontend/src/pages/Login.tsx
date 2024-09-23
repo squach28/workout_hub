@@ -115,8 +115,12 @@ const LoginForm = () => {
             label="Password"
           />
         </FormControl>
-        <Link to="/forgotPassword" component={RouterLink}>
-          <Typography sx={{ textAlign: "right" }}>Forgot password?</Typography>
+        <Link
+          to="/forgotPassword"
+          component={RouterLink}
+          sx={{ display: "inline", textAlign: "right", ml: "auto" }}
+        >
+          <Typography sx={{}}>Forgot password?</Typography>
         </Link>
         <Button variant="contained" color="primary">
           Log in
