@@ -11,26 +11,32 @@ export const signUp = async (req: Request, res: Response) => {
     res.status(400).json({ message: "Missing email or password" });
     return;
   }
+  try {
+    const userExists = await getUserByEmail(email);
 
-  const userExists = await getUserByEmail(email);
+    if (userExists) {
+      res
+        .status(400)
+        .json({ message: `User with email, ${email}, already exists` });
+      return;
+    }
 
-  if (userExists) {
-    res
-      .status(400)
-      .json({ message: `User with email, ${email}, already exists` });
-    return;
-  }
+    const hash = await hashPassword(password);
 
-  const hash = await hashPassword(password);
+    if (hash === null) {
+      res.status(500).json({ message: "Something went wrong" });
+      return;
+    }
 
-  if (hash === null) {
-    res.status(500).json({ message: "Something went wrong" });
-    return;
-  }
+    const user = await insertUser(email, hash);
 
-  const user = await insertUser(email, hash);
+    if (user === null) {
+      res.status(500).json({
+        message: "Something bad happened, please try again later",
+      });
+      return;
+    }
 
-  if (user) {
     const token = generateJWT(user.uuid);
     res.cookie("access_token", token, {
       httpOnly: true,
@@ -42,12 +48,11 @@ export const signUp = async (req: Request, res: Response) => {
       email: user.email,
     });
     return;
+  } catch (e) {
+    res.status(500).json({
+      message: "Something bad happened, please try again later",
+    });
   }
-
-  res.status(500).json({
-    message: "Something went wrong",
-  });
-  return;
 };
 
 export const login = async (req: Request, res: Response) => {
