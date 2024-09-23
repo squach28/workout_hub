@@ -58,7 +58,6 @@ const Navbar = () => {
     );
   };
 
-  // TODO: change the menu to a drawer
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="primary">
