@@ -6,8 +6,16 @@ import {
   Link,
   TextField,
   Button,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
+import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { UserLogInData } from "../types/UserLogInData";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Login = () => {
   return (
@@ -37,6 +45,25 @@ const Login = () => {
 };
 
 const LoginForm = () => {
+  const [userLoginData, setUserLoginData] = useState<UserLogInData>({
+    email: "",
+    password: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setUserLoginData({
+      ...userLoginData,
+      [name]: value,
+    });
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   return (
     <Paper
       elevation={4}
@@ -61,16 +88,33 @@ const LoginForm = () => {
           size="small"
           label="Email"
           variant="outlined"
+          onChange={handleFormChange}
+          value={userLoginData.email}
           sx={{ backgroundColor: "#FCFCFC" }}
         />
-        <TextField
-          id="password"
-          name="password"
-          size="small"
-          label="Password"
-          variant="outlined"
-          sx={{ backgroundColor: "#FCFCFC" }}
-        />
+        <FormControl size="small" variant="outlined">
+          <InputLabel htmlFor="password">Password</InputLabel>
+          <OutlinedInput
+            id="password"
+            name="password"
+            type={showPassword ? "text" : "password"}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  edge="end"
+                  onClick={handleClickShowPassword}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            onChange={handleFormChange}
+            value={userLoginData.password}
+            sx={{ backgroundColor: "#FCFCFC" }}
+            label="Password"
+          />
+        </FormControl>
         <Link to="/forgotPassword" component={RouterLink}>
           <Typography sx={{ textAlign: "right" }}>Forgot password?</Typography>
         </Link>

@@ -67,6 +67,7 @@ const SignUpForm = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<{ message: string } | null>(null);
+
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     const value = e.target.value;
