@@ -19,6 +19,7 @@ import { UserLogInData } from "../types/UserLogInData";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { UserLoginErrors } from "../types/UserLogInErrors";
 import { validateUserLogInData } from "../utils/validators";
+import axios from "axios";
 
 const Login = () => {
   return (
@@ -84,6 +85,20 @@ const LoginForm = () => {
         email: userLoginData.email,
         password: userLoginData.password,
       };
+      axios
+        .post(`${import.meta.env.VITE_API_URL}/auth/login`, user)
+        .then((res) => {
+          if (res.status === 200) {
+            console.log("success!");
+          }
+        })
+        .catch((e) => {
+          console.log(e.response.data);
+          setError(e.response.data);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   };
 
@@ -144,6 +159,11 @@ const LoginForm = () => {
             {errors.password}
           </FormHelperText>
         </FormControl>
+        {error !== null ? (
+          <Typography variant="caption" color="error">
+            {error.message}
+          </Typography>
+        ) : null}
         <Link
           to="/forgotPassword"
           component={RouterLink}
@@ -151,7 +171,12 @@ const LoginForm = () => {
         >
           <Typography sx={{}}>Forgot password?</Typography>
         </Link>
-        <Button variant="contained" color="primary" onClick={handleLogin}>
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={loading}
+          onClick={handleLogin}
+        >
           Log in
         </Button>
         <Typography sx={{ textAlign: "center" }}>
